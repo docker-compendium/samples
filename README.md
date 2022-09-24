@@ -9,11 +9,12 @@ Rheinwerk Computing, ISBN 78-3-8362-8634-3
 
 https://www.rheinwerk-verlag.de/5393
 
-Verwenden Sie dieses Repository folgendermaßen um alle Beispiele herunterzuladen:
+Verwenden Sie bitte die folgenden Kommandos, um alle Beispiele 
+zur deutschen Ausgabe des Docker-Buchs herunterzuladen:
 
 ```bash
-git clone https://github.com/docker-compendium/samples.git
-cd samples
+git clone https://github.com/docbuc/dockerbuch.git
+cd dockerbuch
 git submodule update --init --recursive
 ```
 
@@ -24,8 +25,7 @@ Rheinwerk Computing, ISBN ???
 
 https://www.sap-press.com/???/
 
-Download all sample files from this repository:
-
+How to download all sample files for the english edition:
 
 ```bash
 git clone https://github.com/docker-compendium/samples.git
