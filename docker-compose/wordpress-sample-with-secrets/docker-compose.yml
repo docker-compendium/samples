@@ -1,0 +1,42 @@
+# Datei test/docker-compose.yml
+version: '3.1'
+
+services:
+   db:
+     image: mariadb:latest
+     volumes:
+       - vol-db:/var/lib/mysql
+     secrets:
+       - mysql_root
+       - mysql_user
+     environment:
+       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root
+       MYSQL_DATABASE: wp
+       MYSQL_USER: wpuser
+       MYSQL_PASSWORD_FILE: /run/secrets/mysql_user
+     restart: always
+
+   wordpress:
+     image: wordpress:latest
+     volumes:
+       - vol-www:/var/www/html/wp-content
+     secrets:
+       - mysql_user
+     ports:
+       - "8082:80"
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wpuser
+       WORDPRESS_DB_NAME: wp
+       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_user
+     restart: always
+
+volumes:
+  vol-www:
+  vol-db:
+
+secrets:
+  mysql_root:
+    file: ./mysql-root-pw.txt
+  mysql_user:
+    file: ./mysql-user-pw.txt
