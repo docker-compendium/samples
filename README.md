@@ -18,12 +18,12 @@ cd dockerbuch
 git submodule update --init --recursive
 ```
 
-## Docker compendium (todo: official title)
+## Docker: Practical Guide for Developers and DevOps Teams
 
-??? pages, 1st edition 2023
-Rheinwerk Computing, ISBN ???
+491 pages, 1st edition 2023
+Rheinwerk Computing, ISBN 978-1-4932-2384-8
 
-https://www.sap-press.com/???/
+https://www.sap-press.com/docker_5650/
 
 How to download all sample files for the english edition:
 
