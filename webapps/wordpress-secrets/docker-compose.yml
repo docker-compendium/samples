@@ -1,0 +1,38 @@
+version: '3.5'
+services:
+  wordpress:
+    image: wordpress:apache
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - webdata:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: dockerbuch
+      WORDPRESS_DB_USER: dockerbuch
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_user
+    secrets:
+      - mysql_user
+
+  mariadb:
+    image: mariadb:10
+    restart: always
+    secrets:
+      - mysql_root
+      - mysql_user
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root
+      MYSQL_DATABASE: dockerbuch
+      MYSQL_USER: dockerbuch
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_user
+
+volumes:
+  webdata:
+secrets:
+  mysql_root:
+    file: ./mysql_root.txt
+  mysql_user:
+    file: ./mysql_user.txt
+
+

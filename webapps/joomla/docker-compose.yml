@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  joomla:
+    image: joomla:apache
+    ports:
+      - 8080:80
+    volumes:
+      - webdata:/var/www/html
+    environment:
+      JOOMLA_DB_HOST: mariadb
+      JOOMLA_DB_NAME: dockerbuch
+      JOOMLA_DB_USER: root
+      JOOMLA_DB_PASSWORD: eengi7suXeut
+  mariadb:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: eengi7suXeut
+      MYSQL_DATABASE: dockerbuch
+      MYSQL_USER: dockerbuch
+      MYSQL_PASSWORD: johroo2zaeQu
+volumes:
+  webdata:

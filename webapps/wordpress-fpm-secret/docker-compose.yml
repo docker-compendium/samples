@@ -1,0 +1,44 @@
+version: '3.1'
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - webdata:/var/www/html
+    ports:
+      - 8080:80
+  wordpress:
+    image: wordpress:fpm
+    # image: wordpress:php7.1-fpm-alpine
+    restart: always
+    volumes:
+      - webdata:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: dockerbuch
+      WORDPRESS_DB_USER: dockerbuch
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_user
+    secrets:
+      - mysql_user
+
+  mariadb:
+    image: mariadb:10
+    restart: always
+    secrets:
+      - mysql_root
+      - mysql_user
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root
+      MYSQL_DATABASE: dockerbuch
+      MYSQL_USER: dockerbuch
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_user
+
+volumes:
+  webdata:
+secrets:
+  mysql_root:
+    file: ./mysql_root.txt
+  mysql_user:
+    file: ./mysql_user.txt
+
+

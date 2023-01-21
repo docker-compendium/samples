@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    image: wordpress:apache
+    restart: unless-stopped
+    volumes:
+      - webdata:/var/www/html
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: dockerbuch
+      WORDPRESS_DB_USER: dockerbuch
+      WORDPRESS_DB_PASSWORD: johroo2zaeQu
+
+  mariadb:
+    image: mariadb:10
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: eengi7suXeut
+      MYSQL_DATABASE: dockerbuch
+      MYSQL_USER: dockerbuch
+      MYSQL_PASSWORD: johroo2zaeQu
+
+volumes:
+  webdata:
+
