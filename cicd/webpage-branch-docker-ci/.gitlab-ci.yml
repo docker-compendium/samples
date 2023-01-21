@@ -1,0 +1,31 @@
+
+image:
+  name: "registry.dockerbuch.info/dockerbuch/webpage/testimage"
+  entrypoint: [""]
+
+stages:
+  - test
+
+before_script:
+  - cd dockerbuch.info && hugo -d dockerbuch-out
+
+testHTML:
+  stage: test
+  tags:
+    - dockerRunner
+  script:
+    - pwd
+    - /usr/bin/java -jar /opt/dist/vnu.jar
+        dockerbuch-out/index.html
+
+testLinks:
+  stage: test
+  services:
+    - name: registry.dockerbuch.info/dockerbuch/webpage/testweb
+      alias: webserver
+  tags:
+    - dockerRunner
+  script:
+    - pwd
+    - linkchecker --check-extern http://webserver/
+

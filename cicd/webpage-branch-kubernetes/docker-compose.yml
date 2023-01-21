@@ -1,0 +1,8 @@
+version: '3.4'
+services:
+  web:
+    image: gitlab.dockerbuch.info/dockerbuch/dockerbuch-web:prod
+    build:
+      context: .
+    ports:
+      - "8000:80"

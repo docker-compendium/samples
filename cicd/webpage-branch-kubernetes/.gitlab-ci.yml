@@ -1,0 +1,73 @@
+variables:
+  REGISTRY: registry.dockerbuch.info
+  TEST_IMAGE: $REGISTRY/dockerbuch/webpage:$CI_COMMIT_REF_NAME
+  TEST_NETWORK: testnet
+  RELEASE_IMAGE: $REGISTRY/dockerbuch/webpage:latest
+  TEST_CONTAINER_NAME: dockerbuch
+  LINK_CHECKER: $REGISTRY/dockerbuch/webpage/linkchecker
+  VALIDATOR: $REGISTRY/dockerbuch/webpage/validator
+  DOCKER_DRIVER: overlay
+  DOCKER_HOST: tcp://localhost:2375
+
+image: docker:dind
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - release
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $REGISTRY
+
+build:
+  stage: build
+  tags:
+    - kubernetes
+  script:
+    - pwd
+    - docker build -t $TEST_IMAGE .
+    - docker push $TEST_IMAGE
+    - docker build -t $LINK_CHECKER linkchecker/
+    - docker push $LINK_CHECKER
+    - docker build -t $VALIDATOR validator/
+    - docker push $VALIDATOR
+
+
+testLinks:
+  stage: test
+  tags:
+    - kubernetes
+  script:
+    - docker network create $TEST_NETWORK
+    - docker run -d --name $TEST_CONTAINER_NAME
+        --network $TEST_NETWORK $TEST_IMAGE
+    - docker ps -a
+    - docker run --rm --network $TEST_NETWORK $LINK_CHECKER
+        http://$TEST_CONTAINER_NAME/ --check-extern
+        --ignore-url='cdn.rawgit.com'
+    - cat /etc/os-release
+
+testHTML:
+  stage: test
+  tags:
+    - kubernetes
+  script:
+    - ls -l ./ /
+    - docker run -d --name $TEST_CONTAINER_NAME $TEST_IMAGE
+    - docker ps -a
+    - docker run --volumes-from $TEST_CONTAINER_NAME $VALIDATOR
+       --rm --errors-only --skip-non-html /usr/share/nginx/html/
+
+release:
+  stage: release
+  tags:
+    - kubernetes
+  script:
+    - docker pull $TEST_IMAGE
+    - docker tag $TEST_IMAGE $RELEASE_IMAGE
+    - docker push $RELEASE_IMAGE
+  only:
+    - master
+    - kubernetes-runner

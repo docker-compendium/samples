@@ -1,0 +1,42 @@
+baseURL = "/"
+languageCode = "de"
+title = "Docker"
+theme = "coder"
+
+[params]
+  author = "Bernd Öggl, Michael Kofler"
+  info = "Ein Buch über Docker für DevOps"
+  description = "Beispiele, Cloud und viel mehr"
+  avatarurl = "images/dc_s.png"
+  hideCredits = true
+  hideCopyright = false
+
+[[params.social]]
+    name = "Github"
+    weight = 1
+    url = "https://github.com/docbuc/"
+[[params.social]]
+    name = "Amazon"
+    weight = 2
+    url = "https://www.amazon.de/Docker-Praxisbuch-Entwickler-DevOps-Teams-Windows/dp/3836261766/"
+[[params.social]]
+    name = "Rheinwerk"
+    weight = 2
+    url = "https://www.rheinwerk-verlag.de/docker_4599/"
+
+# [[menu.main]]
+#   name = "Blog"
+#   weight = 1
+#   url = "/posts/"
+[[menu.main]]
+  name = "Inhalt"
+  weight = 2
+  url = "/inhalt/"
+[[menu.main]]
+  name = "Errata"
+  weight = 3
+  url = "https://kofler.info/buecher/docker/errata/"
+[[menu.main]]
+  name = "Über das Buch"
+  weight = 4
+  url = "/about/"

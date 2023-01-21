@@ -1,0 +1,80 @@
+variables:
+  REGISTRY: registry.dockerbuch.info
+  TEST_IMAGE: $REGISTRY/dockerbuch/webpage:$CI_COMMIT_REF_NAME
+  TEST_NETWORK: testnet
+  RELEASE_IMAGE: $REGISTRY/dockerbuch/webpage:latest
+  TEST_CONTAINER_NAME: dockerbuch
+  LINK_CHECKER: $REGISTRY/dockerbuch/webpage/linkchecker
+  VALIDATOR: $REGISTRY/dockerbuch/webpage/validator
+
+stages:
+  - build
+  - setupTest
+  - test
+  - cleanupTest
+  - release
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $REGISTRY
+
+build:
+  stage: build
+  tags:
+    - shellRunner
+  script:
+    - pwd
+    - ls -l ./ /
+    - docker build -t $TEST_IMAGE .
+    - docker push $TEST_IMAGE
+    - docker build -t $LINK_CHECKER linkchecker/
+    - docker push $LINK_CHECKER
+    - docker build -t $VALIDATOR validator/
+    - docker push $VALIDATOR
+
+setupTest:
+  stage: setupTest
+  tags:
+    - shellRunner
+  script:
+    - docker pull $TEST_IMAGE
+    - docker network create $TEST_NETWORK
+    - docker run -d --network $TEST_NETWORK
+        --name $TEST_CONTAINER_NAME $TEST_IMAGE
+
+testLinks:
+  stage: test
+  tags:
+    - shellRunner
+  script:
+    - docker ps
+    - docker run --rm --network $TEST_NETWORK $LINK_CHECKER
+        http://$TEST_CONTAINER_NAME/ --check-extern
+
+testHTML:
+  stage: test
+  tags:
+    - shellRunner
+  script:
+    - docker run --volumes-from $TEST_CONTAINER_NAME $VALIDATOR
+      --rm --verbose --skip-non-html /usr/share/nginx/html/
+
+cleanupTest:
+  stage: cleanupTest
+  tags:
+    - shellRunner
+  script:
+    - docker stop $TEST_CONTAINER_NAME
+        && docker rm $TEST_CONTAINER_NAME
+    - docker network rm $TEST_NETWORK
+  when: always
+
+release:
+  stage: release
+  tags:
+    - shellRunner
+  script:
+    - docker pull $TEST_IMAGE
+    - docker tag $TEST_IMAGE $RELEASE_IMAGE
+    - docker push $RELEASE_IMAGE
+  only:
+    - master

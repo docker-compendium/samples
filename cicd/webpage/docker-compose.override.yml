@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  web:
+    image: gitlab.dockerbuch.info/dockerbuch/dockerbuch-web:dev
+    build:
+      context: .
+      target: build
+    user: "1000"
+    command: ["hugo", "server", "--bind", "0.0.0.0"]
+    ports:
+      - 1313:1313
+    volumes:
+      - ./dockerbuch.info:/src
+
