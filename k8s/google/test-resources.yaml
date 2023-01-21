@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: k8s-cert
+spec:
+  dnsNames:
+    - k8s-diary.docker-compendium.info
+  secretName: k8s-diary-certificate-secret
+  issuerRef:
+    name: letsencrypt-staging

@@ -1,0 +1,19 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: dockerbuch-diary-cert
+  namespace: default
+spec:
+  secretName: dockerbuch-diary-cert
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: k8s-diary.dockerbuch.info
+  dnsNames:
+  - k8s-diary.dockerbuch.info
+  acme:
+    config:
+    - http01:
+        ingress: frontend-ingress
+      domains:
+      - k8s-diary.dockerbuch.info

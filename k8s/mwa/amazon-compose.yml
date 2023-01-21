@@ -1,0 +1,22 @@
+version: '3'
+services:
+  api:
+    image: docbuc/mwaapi:latest
+    environment:
+      - MONGO_URL=mongodb://mongo1:27017/
+    ports:
+      - 3000:3000
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: mwa7
+        awslogs-region: eu-west-1
+        awslogs-stream-prefix: mwa7
+  redis:
+    image: redis:4-alpine
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: mwa7
+        awslogs-region: eu-west-1
+        awslogs-stream-prefix: mwa7

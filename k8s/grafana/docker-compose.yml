@@ -1,0 +1,21 @@
+version: '3'
+services:
+  grafana:
+    image: docbuc/grafana:2
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=geheim
+  telegraf:
+    image: docbuc/telegraf:2
+    restart: always
+  influx:
+    image: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_USER=telegraf
+      - INFLUXDB_USER_PASSWORD=iijineeZ9iet
+      - INFLUXDB_DB=telegraf

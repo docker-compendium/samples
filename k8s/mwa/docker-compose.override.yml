@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  api:
+    image: docbuc/mwaapi-dev:latest
+    build:
+      context: api/
+      target: dev
+    environment:
+      - DEBUG=api
+    volumes:
+      - ./api:/src
+  frontend:
+    build:
+      context: frontend
+      target: builder
+    image: docbuc/mwafe-build:latest
+    environment:
+      - HEALTH_URL=http://localhost/
+      - API_BASE=/api
+    volumes:
+      - ./frontend/vue:/src/vue
+    ports:
+      - 8080:8080

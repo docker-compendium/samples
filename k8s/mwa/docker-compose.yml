@@ -1,0 +1,59 @@
+version: '3'
+services:
+  mongo1:
+    image: mongo:4
+    command: --replSet "rs0"
+    volumes:
+      - mongovol1:/data/db
+    ports:
+      - 27017
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+  mongo2:
+    image: mongo:4
+    command: --replSet "rs0"
+    volumes:
+      - mongovol2:/data/db
+    ports:
+      - 27017
+  mongo3:
+    image: mongo:4
+    command: --replSet "rs0"
+    volumes:
+      - mongovol3:/data/db
+    ports:
+      - 27017
+  api:
+    restart: always
+    build: api
+    image: docbuc/mwaapi:2
+    environment:
+      - MONGO_URL=mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0
+    depends_on:
+      - mongo1
+    deploy:
+      replicas: 1
+    ports:
+      - 3000:3000
+  redis:
+    ports:
+      - 6379
+    image: redis:5-alpine
+  frontend:
+    restart: always
+    build: frontend
+    image: docbuc/mwafe:2
+    depends_on:
+      - api
+    ports:
+      - "80:8080"
+    labels:
+      kompose.service.type: LoadBalancer
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+volumes:
+  mongovol1:
+  mongovol2:
+  mongovol3:
