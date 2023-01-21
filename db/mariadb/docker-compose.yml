@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mariadb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: db1
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+      - ./myown.cnf:/etc/mysql/conf.d/myown.cnf
