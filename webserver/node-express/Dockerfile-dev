@@ -1,0 +1,5 @@
+FROM node:16
+WORKDIR /src
+RUN npm i -g express-generator nodemon
+USER node
+

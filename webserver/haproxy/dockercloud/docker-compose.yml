@@ -1,0 +1,15 @@
+version: "3"
+services:
+  haproxy:
+    image: dockercloud/haproxy:1.6.7
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:80
+    links:
+      - nginx
+      - apache
+  nginx:
+    image: docbuc/nginx
+  apache:
+    image: docbuc/apache

@@ -1,0 +1,17 @@
+http:
+  middlewares:
+    simpleAuth:
+      basicAuth:
+        users:
+          - 'admin:$apr1$bHPGpQgP$mnsRIxlw0F3sKSgFF.rWp/'
+  routers:
+    api:
+      rule: Host(`demo.dockerbuch.info`)
+      entrypoints:
+        - websecure
+      middlewares:
+        - simpleAuth
+      service: api@internal
+      tls:
+        certResolver: lets-encrypt
+
