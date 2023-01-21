@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  frontend:
+    volumes:
+      - lecerts:/etc/letsencrypt
+      - ledata:/data/letsencrypt
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "443:443"
+volumes:
+  lecerts:
+  ledata:
+

@@ -1,0 +1,42 @@
+version: '2'
+services:
+  grafana:
+    image: docbuc/grafana:3-ecs
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=geheim
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: grafana
+        awslogs-region: eu-west-1
+        awslogs-stream-prefix: grafana
+  telegraf:
+    image: docbuc/telegraf:3-ecs
+    build: telegraf/
+    restart: always
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: grafana
+        awslogs-region: eu-west-1
+        awslogs-stream-prefix: grafana
+  influx:
+    image: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_USER=telegraf
+      - INFLUXDB_USER_PASSWORD=iijineeZ9iet
+      - INFLUXDB_DB=telegraf
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: grafana
+        awslogs-region: eu-west-1
+        awslogs-stream-prefix: grafana
+
