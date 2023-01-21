@@ -1,0 +1,6 @@
+profile ro-usr flags=(attach_disconnected,mediate_deleted) {
+  file,
+  audit deny /usr/** w,
+  audit /** w,
+}
+
