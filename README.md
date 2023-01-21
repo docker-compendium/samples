@@ -2,6 +2,20 @@
 
 Docker book by [Bernd Öggl](https://webman.at) and [Michael Kofler](https://kofler.info), available in German and English
 
+## Docker: Practical Guide for Developers and DevOps Teams
+
+491 pages, 1st edition 2023
+Rheinwerk Computing, ISBN 978-1-4932-2384-8
+
+https://www.sap-press.com/docker_5650/
+
+How to download all sample files for the english edition:
+
+```bash
+git clone https://github.com/docker-compendium/samples.git
+cd samples
+```
+
 ## Das Praxisbuch für Entwickler und DevOps-Teams
 
 496 Seiten, 3.,  Auflage 2021, gebunden
@@ -18,17 +32,3 @@ cd dockerbuch
 git submodule update --init --recursive
 ```
 
-## Docker: Practical Guide for Developers and DevOps Teams
-
-491 pages, 1st edition 2023
-Rheinwerk Computing, ISBN 978-1-4932-2384-8
-
-https://www.sap-press.com/docker_5650/
-
-How to download all sample files for the english edition:
-
-```bash
-git clone https://github.com/docker-compendium/samples.git
-cd samples
-git submodule update --init --recursive
-```
