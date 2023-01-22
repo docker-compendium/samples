@@ -29,6 +29,5 @@ zur deutschen Ausgabe des Docker-Buchs herunterzuladen:
 ```bash
 git clone https://github.com/docbuc/dockerbuch.git
 cd dockerbuch
-git submodule update --init --recursive
 ```
 
